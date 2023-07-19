@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
 import { Home } from "./pages/home/Home";
 import Navbar from "./components/navbar/Navbar";
@@ -8,8 +9,12 @@ import Menu from "./components/menu/Menu";
 import { Users } from "./pages/users/Users";
 import Products from "./pages/products/Products";
 import Login from "./pages/login/Login";
+import Product from "./pages/product/Product";
+import User from "./pages/user/User";
 
 import "./styles/global.scss";
+
+const queryClient = new QueryClient();
 
 function App() {
   const Layout = () => {
@@ -21,7 +26,8 @@ function App() {
             <Menu />
           </div>
           <div className="contentContainer">
-            <Outlet />
+            <QueryClientProvider client={queryClient}><Outlet /></QueryClientProvider>
+            
           </div>
         </div>
         <Footer />
@@ -31,27 +37,35 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path:"/",
+      path: "/",
       element: <Layout />,
       children: [
         {
           path: "/",
-          element: <Home />
+          element: <Home />,
         },
         {
           path: "/users",
-          element: <Users />
+          element: <Users />,
         },
         {
           path: "/products",
           element: <Products />,
         },
-      ]
+        {
+          path: "/users/:id",
+          element: <User />,
+        },
+        {
+          path: "/products/:id",
+          element: <Product />,
+        },
+      ],
     },
     {
       path: "/login",
-      element: <Login />
-    }
+      element: <Login />,
+    },
   ]);
 
   return <RouterProvider router={router} />;

@@ -14,7 +14,7 @@ $xxl: 1400px;
     @content;
   }
 }
-@mixin lg {
+@mixin lg { 
   @media screen and (max-width: ($lg)) {
     @content;
   }
